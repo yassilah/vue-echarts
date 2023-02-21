@@ -1,11 +1,11 @@
 import { type ECharts, type EChartsOption, init } from 'echarts'
 import {
     type MaybeElementRef,
-    isFunction,
     tryOnUnmounted,
     useResizeObserver
 } from '@vueuse/core'
-import { computed, shallowRef, unref, watchEffect } from 'vue'
+import { reactiveParam } from '@/utils'
+import { shallowRef, unref, watchEffect } from 'vue'
 import type { ReactiveParam } from '@/types'
 
 /**
@@ -13,23 +13,32 @@ import type { ReactiveParam } from '@/types'
  */
 export function useChart(
     containerRef: MaybeElementRef<HTMLElement>,
-    optionsRef: ReactiveParam<EChartsOption>
+    optionsRef: ReactiveParam<EChartsOption>,
+    ssr: boolean
 ) {
     const instance = shallowRef<ECharts>()
 
-    const options = computed(() => {
-        return unref(isFunction(optionsRef) ? optionsRef() : optionsRef)
-    })
+    const options = reactiveParam(optionsRef)
 
     /**
      * Initialize ECharts instance.
      */
     function initialize() {
-        const el = unref(containerRef)
-        if (!el) return
         dispose()
-        instance.value = init(el)
-        initializeEvents(instance.value)
+
+        if (ssr) {
+            instance.value = init(undefined, undefined, {
+                ssr: true,
+                renderer: 'svg',
+                height: 1000,
+                width: 1000
+            })
+        } else {
+            const el = unref(containerRef)
+            if (!el) return
+            instance.value = init(el)
+            initializeEvents(instance.value)
+        }
     }
 
     /**
@@ -70,7 +79,13 @@ export function useChart(
      * Set ECharts options.
      */
     function setOption() {
-        unref(instance)?.setOption(unref(options) || {})
+        const opts = { ...(unref(options) || {}) }
+
+        if (ssr) {
+            opts.animation = false
+        }
+
+        unref(instance)?.setOption(opts)
     }
 
     /**

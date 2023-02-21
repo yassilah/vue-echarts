@@ -11,6 +11,8 @@ export default defineConfig({
         dts({
             insertTypesEntry: true,
             noEmitOnError: true,
+            logLevel: 'silent',
+            skipDiagnostics: true,
             beforeWriteFile(filePath) {
                 return generateComponentTypes(filePath, generators)
             }
