@@ -31,7 +31,7 @@ export default defineComponent({
                 ? useSlots().default?.({
                       instance,
                       container,
-                      size,
+                      ...size,
                       options: props.options
                   })
                 : []

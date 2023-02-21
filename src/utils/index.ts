@@ -1,3 +1,6 @@
+import { ReactiveParam } from '@/types'
+import { computed, unref } from 'vue'
+import { isFunction } from '@vueuse/core'
 import type { ECharts } from 'echarts'
 import type { ViewRootGroup } from 'echarts/types/src/util/types'
 
@@ -63,8 +66,31 @@ export function camelCase(str: string) {
  * Normalize the attributes.
  */
 export function normalizeAttrs<T extends Record<string, any>>(attrs: T) {
-    return Object.entries(attrs).reduce((acc, [key, value]) => {
-        acc[camelCase(key) as keyof T] = value
-        return acc
+    return Object.entries(attrs).reduce((acc, [path, value]) => {
+        return objFromDotNotation(acc, path.split(':'), value)
     }, {} as T)
+}
+
+/**
+ * Create an object from a dot notation path.
+ */
+export function objFromDotNotation(obj: any, parts: string[], value: any) {
+    let current = obj
+
+    while (parts.length) {
+        const key = camelCase(parts.shift())
+        current[key] = parts.length ? current[key] ?? {} : value
+        current = current[key]
+    }
+
+    return obj
+}
+
+/**
+ * Convert a reactive param to a computed value.
+ */
+export function reactiveParam<T>(value: ReactiveParam<T>) {
+    return computed(() => {
+        return unref(isFunction(value) ? value() : value)
+    })
 }
