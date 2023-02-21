@@ -1,0 +1,73 @@
+{
+  "name": "vue-echarts",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./composables": {
+      "import": "./dist/composables.mjs",
+      "require": "./dist/composables.js",
+      "types": "./dist/composables.d.ts"
+    },
+    "./components/options": {
+      "import": "./dist/components/options/index.mjs",
+      "require": "./dist/components/options/index.js",
+      "types": "./dist/components/options/index.d.ts"
+    },
+    "./components/options/*": {
+      "import": "./dist/components/options/*",
+      "require": "./dist/components/options/*",
+      "types": "./dist/components/options/*.d.ts"
+    },
+    "./components": {
+      "import": "./dist/components/index.mjs",
+      "require": "./dist/components/index.js",
+      "types": "./dist/components/index.d.ts"
+    },
+    "./components/*": {
+      "import": "./dist/components/*",
+      "require": "./dist/components/*",
+      "types": "./dist/components/*.d.ts"
+    }
+  },
+  "scripts": {
+    "docs:dev": "vitepress dev docs",
+    "docs:build": "vitepress build docs",
+    "docs:preview": "vitepress preview docs",
+    "dev": "vite build -w",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@apenhet/eslint-config": "^1.1.4",
+    "@vitejs/plugin-vue": "^4.0.0",
+    "eslint": "^8.34.0",
+    "rollup-plugin-typescript2": "^0.34.1",
+    "typescript": "^4.9.5",
+    "typescript-json-schema": "^0.55.0",
+    "vite": "^4.1.2",
+    "vite-plugin-dts": "2.0.0-beta.2",
+    "vitepress": "1.0.0-alpha.46",
+    "vitest": "^0.28.5",
+    "vue": "^3.2.47"
+  },
+  "eslintConfig": {
+    "extends": "@apenhet",
+    "ignorePatterns": [
+      "!docs/**/*",
+      "dist",
+      "node_modules"
+    ]
+  },
+  "dependencies": {
+    "@vueuse/core": "^9.13.0",
+    "echarts": "^5.4.1"
+  }
+}

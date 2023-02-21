@@ -1,0 +1,24 @@
+{
+    "compilerOptions": {
+        "target": "esnext",
+        "module": "esnext",
+        "moduleResolution": "node",
+        "baseUrl": ".",
+        "resolveJsonModule": true,
+        "paths": {
+            "@/*": ["src/*"],
+            "#components": ["./src/types/components"]
+        },
+        "jsx": "preserve",
+        "preserveSymlinks": true
+    },
+    "include": [
+       "src/**/*",
+       "vite.config.ts"
+    ],
+    "exclude": [
+        "node_modules",
+        "docs",
+        "dist"
+    ]
+}
