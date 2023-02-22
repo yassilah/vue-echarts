@@ -106,8 +106,8 @@ function exportAllComponentsPlugin(generators: Record<string, string[]>) {
                 this,
                 'components/index',
                 [
-                    `import ECharts from './echarts'`,
-                    `export { default as ECharts } from './echarts'`,
+                    `import ECharts from './echarts.mjs'`,
+                    `export { default as ECharts } from './echarts.mjs'`,
                     ...Object.entries(generators).flatMap(([type, list]) => [
                         makeImport(list, `./${type}/`, `${type}-`),
                         makeExport(list, `./${type}/`, `${type}-`)
