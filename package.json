@@ -1,8 +1,7 @@
 {
-  "name": "vue-echarts",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "name": "@yassidev/vue-echarts",
+  "version": "0.0.1",
+  "description": "Wrapper for ECharts with Vue 3",
   "exports": {
     ".": {
       "import": "./dist/index.mjs",
