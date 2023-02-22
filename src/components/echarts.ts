@@ -30,7 +30,7 @@ export default defineComponent({
     setup(props, { attrs }) {
         const container = shallowRef<HTMLElement>()
         const size = reactive(useElementBounding(container))
-        const instance = useChart(container, () => props.options, props.ssr)
+        const instance = useChart(container, props.options, props.ssr)
         const dataUrl = ref<string>()
 
         provide(INSTANCE, instance)
@@ -47,8 +47,7 @@ export default defineComponent({
                 ? useSlots().default?.({
                       instance,
                       container,
-                      ...size,
-                      options: props.options
+                      ...size
                   })
                 : []
 

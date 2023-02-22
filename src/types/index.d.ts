@@ -1,9 +1,10 @@
-import type { MaybeRef } from '@vueuse/core'
+import type { Ref } from 'vue'
 
 export * from './events'
-export * from './options'
+export * from './option'
 export * from './series'
+export * from './shape'
 
 export type UnwrapArray<T> = T extends Array<infer U> ? UnwrapArray<U> : T
 
-export type ReactiveParam<T> = MaybeRef<T> | (() => T)
+export type ReactiveParam<T> = T | Ref<T> | (() => T)

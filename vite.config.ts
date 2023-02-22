@@ -11,8 +11,8 @@ export default defineConfig({
         dts({
             insertTypesEntry: true,
             noEmitOnError: true,
-            logLevel: 'silent',
             skipDiagnostics: true,
+            include: ['src/**/*.ts'],
             beforeWriteFile(filePath) {
                 return generateComponentTypes(filePath, generators)
             }
@@ -158,6 +158,7 @@ function makeImportOrExport(
     prepend = ''
 ) {
     return list
+
         .map(name => {
             const as = pascalCase(`${prepend}${name}`)
             return `${type} { default as ${as} } from '${base}${name}.mjs'`

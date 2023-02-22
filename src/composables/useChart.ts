@@ -5,7 +5,7 @@ import {
     useResizeObserver
 } from '@vueuse/core'
 import { reactiveParam } from '@/utils'
-import { shallowRef, unref, watchEffect } from 'vue'
+import { shallowRef, unref, watch } from 'vue'
 import type { ReactiveParam } from '@/types'
 
 /**
@@ -95,8 +95,8 @@ export function useChart(
         unref(instance)?.resize()
     }
 
-    watchEffect(initialize)
-    watchEffect(setOption)
+    watch(containerRef, initialize)
+    watch(options, setOption)
     tryOnUnmounted(dispose)
     useResizeObserver(containerRef, resize)
 

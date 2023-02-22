@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { SeriesCustom } from 'vue-echarts/components'
 import { ref } from 'vue'
 
 const data = ref(
@@ -31,53 +30,27 @@ setInterval(() => {
 </script>
 
 <template>
-    <ECharts v-slot="{ height, width }" style="height: 100vh; width: 100vw">
-        <SeriesCustom :data="data" coordinate-system="none">
-            <template #default="{ index, length, item }">
-                <group
-                    :y="(index * height) / length"
-                    :name="item.name"
-                    :silent="true"
-                    :update-animation:duration="3000"
-                    update-animation:easing="cubicInOut"
+    <ECharts v-slot="{ width }" style="height: 100vh; width: 100vw">
+        <SeriesCustom
+            v-slot="{ index, length, item }"
+            :data="data"
+            coordinate-system="none"
+        >
+            <ShapeGroup :x="(index * width) / length">
+                <ShapeRect
+                    :shape:width="20"
+                    :shape:height="10"
+                    style:fill="yellow"
+                />
+                <ShapeText
+                    style:rich:name:font-size="50"
+                    style:rich:value:font-size="20"
+                    :style:fill="randomHexColor()"
                 >
-                    <rect
-                        :name="item.name + '-rect'"
-                        :transition="['style']"
-                        :update-animation:duration="3000"
-                        :style:fill="index % 2 ? randomHexColor() : 'lightgray'"
-                        :shape:width="width"
-                        :shape:height="height / length"
-                    />
-
-                    <text
-                        :style:font-size="18"
-                        style:font-weight="bold"
-                        style:align="left"
-                        :y="height / length / 2"
-                        :x="width / 4"
-                        :style:height="height / length"
-                        style:vertical-align="middle"
-                        :style:width="width / 2"
-                        style:fill="white"
-                    >
-                        {{ item.name }}
-                    </text>
-
-                    <text
-                        :style:font-size="12"
-                        style:font-weight="bold"
-                        style:align="center"
-                        :y="height / length / 2"
-                        :x="width / 4 + width / 2"
-                        :style:height="height / length"
-                        :style:width="width / 2"
-                        style:vertical-align="middle"
-                    >
-                        {{ item.value }}
-                    </text>
-                </group>
-            </template>
+                    <span name="name">{{ item.name }}</span>
+                    <span name="value">{{ item.value }}</span>
+                </ShapeText>
+            </ShapeGroup>
         </SeriesCustom>
     </ECharts>
 </template>

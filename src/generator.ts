@@ -9,9 +9,19 @@ const program = getProgramFromFiles([path], {
     baseUrl: fileURLToPath(new URL(`./`, import.meta.url))
 })
 
+const cache: Map<string, string[]> = new Map()
+
 function getList(key: string) {
-    const { enum: list } = generateSchema(program, key)
-    return list as string[]
+    if (!cache.has(key)) {
+        const { enum: list } = generateSchema(program, key)
+        cache.set(key, list as string[])
+    }
+
+    return cache.get(key)
 }
 
-export default { options: getList('OptionKey'), series: getList('SeriesKey') }
+export default {
+    option: getList('OptionKey'),
+    series: getList('SeriesKey'),
+    shape: getList('ShapeKey')
+}

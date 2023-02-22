@@ -1,6 +1,6 @@
 import { EVENTS } from '@/constants'
 import { Series, SeriesKey } from '@/types/series'
-import { type Slots, VNode, computed, defineComponent } from 'vue'
+import { type Slots, defineComponent, render } from 'vue'
 import { normalizeAttrs } from '@/utils'
 import { useChartOption } from '@/composables/useChartOption'
 import type {
@@ -14,7 +14,7 @@ export default function <Type extends SeriesKey>(type: Type) {
         props: {} as unknown as Readonly<Series[Type]>,
         emits: Object.values(EVENTS),
         setup(_, { emit, slots, attrs }) {
-            const options = computed(() => {
+            function getOptions() {
                 const options = { ...attrs, type } as Series[Type]
 
                 if (options.type === 'custom' && !options.renderItem) {
@@ -25,9 +25,9 @@ export default function <Type extends SeriesKey>(type: Type) {
                 }
 
                 return normalizeAttrs(options) as Series[Type]
-            })
+            }
 
-            useChartOption('series', options, emit)
+            useChartOption('series', getOptions(), emit)
 
             return () => null
         }
@@ -74,26 +74,8 @@ function getSlotsRenderItemContent(
     const slot = rendered?.at(0)
 
     if (slot) {
-        return slotToJson(slot)
-    }
-}
-
-/**
- * Convert a slot to JSON.
- */
-function slotToJson(slot: VNode) {
-    const props = normalizeAttrs(slot.props ?? {})
-
-    if (slot.type === 'text' && !props.style?.text) {
-        props.style ??= {}
-        props.style.text = String(slot.children).trim()
-    }
-
-    return {
-        type: slot.type,
-        ...props,
-        children: Array.isArray(slot.children)
-            ? slot.children.map(slotToJson)
-            : []
+        const div = document.createElement('div')
+        render(slot, div)
+        return JSON.parse(div.textContent)
     }
 }
