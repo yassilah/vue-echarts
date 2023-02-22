@@ -1,6 +1,6 @@
 {
   "name": "@yassidev/vue-echarts",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Wrapper for ECharts with Vue 3",
   "private": false,
   "files": [

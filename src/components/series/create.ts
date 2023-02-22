@@ -76,6 +76,10 @@ function getSlotsRenderItemContent(
     if (slot) {
         const div = document.createElement('div')
         render(slot, div)
-        return JSON.parse(div.textContent)
+        const nodes = Array.from(div.childNodes)
+            .filter(node => node.textContent)
+            .map(node => JSON.parse(node.textContent))
+
+        return nodes.length > 1 ? { type: 'group', children: nodes } : nodes[0]
     }
 }

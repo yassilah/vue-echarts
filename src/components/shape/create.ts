@@ -1,6 +1,12 @@
 import { EVENTS } from '@/constants'
+import {
+    Fragment,
+    Slots,
+    VNode,
+    defineComponent,
+    getCurrentInstance
+} from 'vue'
 import { Shape, ShapeKey } from '@/types/shape'
-import { Slots, VNode, defineComponent, getCurrentInstance } from 'vue'
 import { normalizeAttrs } from '@/utils'
 
 export default function <Type extends ShapeKey>(type: Type) {
@@ -24,6 +30,10 @@ export default function <Type extends ShapeKey>(type: Type) {
  * Turn a shape into JSON.
  */
 function childToJSON<K extends ShapeKey>(child: VNode & { type: { name: K } }) {
+    if (child.type === Fragment) {
+        return getChildrenContent(child)
+    }
+
     const base = normalizeAttrs({
         type: child.type.name,
         ...child.props
@@ -44,10 +54,10 @@ function childToJSON<K extends ShapeKey>(child: VNode & { type: { name: K } }) {
  */
 function getChildrenContent(node: VNode) {
     const children = node.children as Slots
-    const content = children?.default?.()
+    const content = children?.default?.() ?? children
 
     if (Array.isArray(content)) {
-        return content.map(childToJSON)
+        return content.flatMap(childToJSON)
     }
 
     return []
