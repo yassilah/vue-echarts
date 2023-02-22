@@ -1,41 +1,20 @@
 {
   "name": "@yassidev/vue-echarts",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Wrapper for ECharts with Vue 3",
   "private": false,
   "files": [
     "dist"
   ],
   "exports": {
-    ".": {
-      "import": "./dist/index.mjs",
-      "require": "./dist/index.js",
-      "types": "./dist/index.d.ts"
-    },
-    "./composables": {
-      "import": "./dist/composables.mjs",
-      "require": "./dist/composables.js",
-      "types": "./dist/composables.d.ts"
-    },
-    "./components/options": {
-      "import": "./dist/components/options/index.mjs",
-      "require": "./dist/components/options/index.js",
-      "types": "./dist/components/options/index.d.ts"
-    },
-    "./components/options/*": {
-      "import": "./dist/components/options/*",
-      "require": "./dist/components/options/*",
-      "types": "./dist/components/options/*.d.ts"
-    },
-    "./components": {
-      "import": "./dist/components/index.mjs",
-      "require": "./dist/components/index.js",
-      "types": "./dist/components/index.d.ts"
-    },
-    "./components/*": {
-      "import": "./dist/components/*",
-      "require": "./dist/components/*",
-      "types": "./dist/components/*.d.ts"
+    ".": "./dist/index.mjs",
+    "./*": "./dist/*"
+  },
+  "typesVersions": {
+    "*": {
+      "*": [
+        "dist/*/index.d.ts"
+      ]
     }
   },
   "scripts": {
