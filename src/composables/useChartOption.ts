@@ -55,10 +55,12 @@ export function useChartOption<K extends OptionKey, V extends Option[K]>(
                 id
             }
         }
+
+        emit(EVENTS.BEFORE_RENDER)
+
         instance.setOption(option, {
             notMerge: false,
-            lazyUpdate: true,
-            silent: true
+            lazyUpdate: true
         })
     }
 
@@ -71,13 +73,14 @@ export function useChartOption<K extends OptionKey, V extends Option[K]>(
 
         if (!value) return
 
+        emit(EVENTS.BEFORE_UNSET)
+
         instance.setOption(unsetOption(chartOptions, value), {
             notMerge: true,
-            lazyUpdate: true,
-            silent: true
+            lazyUpdate: true
         })
 
-        emit(`${EVENTS.UNSET}`)
+        emit(EVENTS.UNSET)
     }
 
     /**

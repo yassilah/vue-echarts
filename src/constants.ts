@@ -13,5 +13,8 @@ export const INSTANCE = createInjectionKey<ECharts>('instance')
 export enum EVENTS {
     RENDERED = 'rendered',
     UNSET = 'removed',
-    FINISHED = 'finished'
+    FINISHED = 'finished',
+    BEFORE_RENDER = 'before:render',
+    BEFORE_RESIZE = 'before:resize',
+    BEFORE_UNSET = 'before:removed'
 }

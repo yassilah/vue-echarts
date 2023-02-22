@@ -1,4 +1,5 @@
 import { type ECharts, type EChartsOption, init } from 'echarts'
+import { EVENTS } from '@/constants'
 import {
     type MaybeElementRef,
     tryOnUnmounted,
@@ -45,8 +46,8 @@ export function useChart(
      * Initialize renderered/destroyed events.
      */
     function initializeEvents(chart: ECharts) {
-        chart.on('rendered', triggerEvent(chart, 'rendered'))
-        chart.on('finished', triggerEvent(chart, 'finished'))
+        chart.on('rendered', triggerEvent(chart, EVENTS.RENDERED))
+        chart.on('finished', triggerEvent(chart, EVENTS.FINISHED))
     }
 
     /**
@@ -79,20 +80,30 @@ export function useChart(
      * Set ECharts options.
      */
     function setOption() {
+        const chart = unref(instance)
+
+        if (!chart) return
+
         const opts = { ...(unref(options) || {}) }
 
         if (ssr) {
             opts.animation = false
         }
 
-        unref(instance)?.setOption(opts)
+        triggerEvent(chart, EVENTS.BEFORE_RENDER)
+        chart.setOption(opts)
     }
 
     /**
      * Resize ECharts instance.
      */
     function resize() {
-        unref(instance)?.resize()
+        const chart = unref(instance)
+
+        if (!chart) return
+
+        triggerEvent(chart, EVENTS.BEFORE_RESIZE)
+        chart.resize()
     }
 
     watch(containerRef, initialize)
