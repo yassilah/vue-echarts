@@ -27,7 +27,7 @@ export default function <Type extends SeriesKey>(type: Type) {
                 return normalizeAttrs(options) as Series[Type]
             }
 
-            useChartOption('series', getOptions(), emit)
+            useChartOption('series', getOptions, emit)
 
             return () => null
         }

@@ -9,9 +9,11 @@ export default function <Name extends OptionKey>(name: Name) {
         props: {} as unknown as Readonly<Option[Name]>,
         emits: Object.values(EVENTS),
         setup(_, { emit, attrs }) {
-            const options = normalizeAttrs(attrs) as Option[Name]
+            function getOptions() {
+                return normalizeAttrs(attrs)
+            }
 
-            useChartOption(name, options, emit)
+            useChartOption(name, getOptions, emit)
 
             return () => null
         }

@@ -1,15 +1,15 @@
 import { EVENTS } from '@/constants'
 import { computed, unref, watchEffect } from 'vue'
-import { getElementBounds, removeUndefinedProps } from '@/utils'
+import { getElementBounds, reactiveParam, removeUndefinedProps } from '@/utils'
 import { tryOnBeforeUnmount, tryOnMounted, tryOnUnmounted } from '@vueuse/core'
 import { useInstance } from './useInstance'
 import type { EChartsOption } from 'echarts'
-import type { Option, OptionKey } from '@/types'
+import type { Option, OptionKey, ReactiveParam } from '@/types'
 import type { ViewRootGroup } from 'echarts/types/src/util/types'
 
 export function useChartOption<K extends OptionKey, V extends Option[K]>(
     name: K,
-    option: V,
+    option: ReactiveParam<V>,
     emit: (event: string, ...args: any[]) => void
 ) {
     /**
@@ -26,7 +26,7 @@ export function useChartOption<K extends OptionKey, V extends Option[K]>(
      * Get the current props values without undefined properties.
      */
     const value = computed(() => {
-        return removeUndefinedProps(option)
+        return removeUndefinedProps(unref(reactiveParam(option)))
     })
 
     /**

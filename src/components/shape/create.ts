@@ -9,6 +9,8 @@ import {
 import { Shape, ShapeKey } from '@/types/shape'
 import { normalizeAttrs } from '@/utils'
 
+type ShapeVNode<K extends ShapeKey = ShapeKey> = VNode & { type: { name: K } }
+
 export default function <Type extends ShapeKey>(type: Type) {
     return defineComponent({
         props: {} as unknown as Readonly<
@@ -18,9 +20,7 @@ export default function <Type extends ShapeKey>(type: Type) {
         name: type,
         inheritAttrs: false,
         setup() {
-            const node = getCurrentInstance().vnode as VNode & {
-                type: { name: Type }
-            }
+            const node = getCurrentInstance().vnode as ShapeVNode
             return () => JSON.stringify(childToJSON(node))
         }
     })
@@ -29,7 +29,7 @@ export default function <Type extends ShapeKey>(type: Type) {
 /**
  * Turn a shape into JSON.
  */
-function childToJSON<K extends ShapeKey>(child: VNode & { type: { name: K } }) {
+function childToJSON<K extends ShapeKey>(child: ShapeVNode<K>) {
     if (child.type === Fragment) {
         return getChildrenContent(child)
     }
