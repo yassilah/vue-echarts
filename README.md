@@ -76,7 +76,7 @@ const data = ref([3, 4, 2, 2])
     <ECharts>
         <OptionXAxis axis-label:align:="center" />
         <!-- OR -->
-         <OptionXAxis :axis-label="{ align: center }" />
+         <OptionXAxis :axis-label="{ align: 'center' }" />
     </ECharts>
 </template>
 ```
@@ -95,12 +95,12 @@ const color = ref('red')
     <ECharts  v-slot="{ width }">
         <SeriesCustom :data="data" coordinate-system="none" v-slot="{ index, item, api, params, length}">
             <ShapeGroup :x="index * width/length">
-                <ShapeRect style:fill="blue" :shape:width="width/length"  :shape:height="width/length" />
+                <ShapeRect style:fill="blue" :shape="{ width: width/length, height: width/length }" />
                 <ShapeText>
                     Simple text
                 </ShapeText>
-                <ShapeText :style:rich:rich1:fill="color">
-                    <span name="rich1">more complex</span>
+                <ShapeText :style:rich:title:fill="color">
+                    <span name="title">more complex</span>
                     <span>text</span>
                 </ShapeText>
             </ShapeGroup>
